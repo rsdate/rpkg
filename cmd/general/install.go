@@ -5,6 +5,7 @@ package general
 
 import (
 	//	"fmt"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -17,34 +18,35 @@ var (
 	mirror string = "RPKG_MIRROR"
 )
 
-func downloadFile(filepath string, url string) int {
+func DownloadFile(filepath string, url string) (int, error) {
 
 	// Create the file
 	out, err := os.Create(filepath)
 	if err != nil {
-		return 1
+		return 1, err
 	}
 	defer out.Close()
 
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
-		return 1
+		return 1, err
 	}
 	defer resp.Body.Close()
 
 	// Check server response
 	if resp.StatusCode != http.StatusOK {
-		return 1
+		var err error = errors.New("server returned bad status code")
+		return 1, err
 	}
 
 	// Writer the body to file
 	_, err = io.Copy(out, resp.Body)
 	if err != nil {
-		return 1
+		return 1, err
 	}
 
-	return 0
+	return 0, nil
 }
 
 // InstallCmd represents the install command
@@ -57,12 +59,11 @@ var InstallCmd = &cobra.Command{
 		if defaultMirror == "" {
 			panic("fatal: default mirror not set.\nConsider setting " + mirror + " and you will not see this error again.")
 		}
-		fullName := "https://www." + defaultMirror + "/" + args[0] + "-" + args[1] + ".tar.gz"
-		code := downloadFile("./"+args[0]+"-"+args[1]+".tar.gz", fullName)
-		//		if code != 0 && err != nil {
-		//			panic("fatal: internal error [ERROR 1000]: downloadFile exited with status code 1. Unable to download package.")
-		//		}
-		fmt.Printf("Code: %d", code)
+		fullName := "https://" + defaultMirror + "/projects/" + args[0] + "-" + args[1] + ".tar.gz"
+		code, err := DownloadFile("./"+args[0]+"-"+args[1]+".tar.gz", fullName)
+		if code != 0 && err != nil {
+			panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
+		}
 
 	},
 }

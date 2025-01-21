@@ -16,6 +16,7 @@ import (
 
 var (
 	mirror string = "RPKG_MIRROR"
+	conf   string
 )
 
 func DownloadFile(filepath string, url string) (int, error) {
@@ -60,11 +61,16 @@ var InstallCmd = &cobra.Command{
 			panic("fatal: default mirror not set.\nConsider setting " + mirror + " and you will not see this error again.")
 		}
 		fullName := "https://" + defaultMirror + "/projects/" + args[0] + "-" + args[1] + ".tar.gz"
-		code, err := DownloadFile("./"+args[0]+"-"+args[1]+".tar.gz", fullName)
-		if code != 0 && err != nil {
-			panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
+		fmt.Printf("The package path is: %s. Would you like to proceed with the installation? [Y or n]", fullName)
+		fmt.Scan(conf)
+		if conf == "Y" {
+			code, err := DownloadFile("./"+args[0]+"-"+args[1]+".tar.gz", fullName)
+			if code != 0 && err != nil {
+				panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
+			}
+		} else if conf == "n" {
+			fmt.Println("Installation aborted.")
 		}
-
 	},
 }
 

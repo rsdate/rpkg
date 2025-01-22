@@ -15,8 +15,9 @@ import (
 )
 
 var (
-	mirror string = "RPKG_MIRROR"
-	conf   string
+	mirror       string = "RPKG_MIRROR"
+	conf         string
+	download_dir string = "DOWLOAD_DIR"
 )
 
 func DownloadPackage(filepath string, url string) (int, error) {
@@ -59,7 +60,7 @@ var InstallCmd = &cobra.Command{
 	Short: "Installs a package from the environment variable RPKG_MIRROR",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		downloadPath := "./" + args[0] + "-" + args[1] + ".tar.gz"
+		downloadPath := os.Getenv(download_dir) + "/" + args[0] + "-" + args[1] + ".tar.gz"
 		projectPath := args[0] + "-" + args[1] + ".tar.gz"
 		defaultMirror := os.Getenv(mirror)
 		if defaultMirror == "" {

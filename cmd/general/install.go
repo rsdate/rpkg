@@ -19,7 +19,7 @@ var (
 	conf   string
 )
 
-func DownloadFile(filepath string, url string) (int, error) {
+func DownloadPackage(filepath string, url string) (int, error) {
 
 	// Create the file
 	out, err := os.Create(filepath)
@@ -64,7 +64,7 @@ var InstallCmd = &cobra.Command{
 		defaultMirror := os.Getenv(mirror)
 		if defaultMirror == "" {
 			fmt.Fprintln(os.Stdout, []any{"warning: environment variable RPKG_MIRROR not set.\nReverting to default mirror..."}...)
-			code, err := DownloadFile(downloadPath, "https://rsdate.github.io/projects/"+projectPath)
+			code, err := DownloadPackage(downloadPath, "https://rsdate.github.io/projects/"+projectPath)
 			if code != 0 && err != nil {
 				panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
 			}
@@ -73,10 +73,11 @@ var InstallCmd = &cobra.Command{
 		fmt.Fprintf(os.Stdout, "The package path on the mirror is %s and it will download to %s.\nWould you like to proceed with the installation? [Y or n]", []any{projectPath, downloadPath}...)
 		fmt.Scan(&conf)
 		if conf == "Y" {
-			code, err := DownloadFile(downloadPath, fullName)
+			code, err := DownloadPackage(downloadPath, fullName)
 			if code != 0 && err != nil {
 				panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
 			}
+			fmt.Println("Installation completed! 🎉")
 		} else if conf == "n" {
 			fmt.Fprintln(os.Stdout, []any{"Installation aborted."}...)
 			os.Exit(0)

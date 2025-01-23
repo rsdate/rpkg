@@ -1,6 +1,6 @@
 module github.com/rsdate/rpkg
 
-go 1.20
+go 1.21.6
 
 require github.com/spf13/cobra v1.8.0
 

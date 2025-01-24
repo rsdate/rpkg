@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/rsdate/rpkgengine"
 	"github.com/spf13/cobra"
 )
 
@@ -21,6 +22,7 @@ var (
 )
 
 func DownloadPackage(filepath string, url string) (int, error) {
+	rpkgengine.Hello()
 
 	// Create the file
 	out, err := os.Create(filepath)

@@ -23,7 +23,7 @@ var (
 
 func DownloadPackage(filepath string, url string) (int, error) {
 	rpkgengine.Hello()
-
+	// Will replace with wget command, right now is too late at night to do so
 	// Create the file
 	out, err := os.Create(filepath)
 	if err != nil {
@@ -47,7 +47,7 @@ func DownloadPackage(filepath string, url string) (int, error) {
 		fmt.Fprintln(os.Stdout, []any{"error: server did not allow permission to access the resource"}...)
 	}
 
-	// Writer the body to file
+	// Write the body to file
 	_, err = io.Copy(out, resp.Body)
 	if err != nil {
 		return 1, err

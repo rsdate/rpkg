@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/rsdate/rpkgengine"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +21,6 @@ var (
 )
 
 func DownloadPackage(filepath string, url string) (int, error) {
-	rpkgengine.Hello()
 	// Will replace with wget command, right now is too late at night to do so
 	// Create the file
 	out, err := os.Create(filepath)
@@ -71,19 +69,20 @@ var InstallCmd = &cobra.Command{
 			if code != 0 && err != nil {
 				panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
 			}
-		}
-		fullName := "https://" + defaultMirror + "/projects/" + projectPath
-		fmt.Fprintf(os.Stdout, "The package path on the mirror is %s and it will download to %s.\nWould you like to proceed with the installation? [Y or n]", []any{projectPath, downloadPath}...)
-		fmt.Scan(&conf)
-		if conf == "Y" {
-			code, err := DownloadPackage(downloadPath, fullName)
-			if code != 0 && err != nil {
-				panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
+		} else {
+			fullName := "https://" + defaultMirror + "/projects/" + projectPath
+			fmt.Fprintf(os.Stdout, "The package path on the mirror is %s and it will download to %s.\nWould you like to proceed with the installation? [Y or n]", []any{projectPath, downloadPath}...)
+			fmt.Scan(&conf)
+			if conf == "Y" {
+				code, err := DownloadPackage(downloadPath, fullName)
+				if code != 0 && err != nil {
+					panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
+				}
+				fmt.Println("Installation completed! 🎉")
+			} else if conf == "n" {
+				fmt.Fprintln(os.Stdout, []any{"Installation aborted."}...)
+				os.Exit(0)
 			}
-			fmt.Println("Installation completed! 🎉")
-		} else if conf == "n" {
-			fmt.Fprintln(os.Stdout, []any{"Installation aborted."}...)
-			os.Exit(0)
 		}
 	},
 }

@@ -33,6 +33,7 @@ func Execute() {
 func addSubCommands() {
 	rootCmd.AddCommand(general.InstallCmd)
 	rootCmd.AddCommand(general.RemoveCmd)
+	rootCmd.AddCommand(general.BuildCmd)
 }
 func init() {
 	// Here you will define your flags and configuration settings.

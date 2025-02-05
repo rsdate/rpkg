@@ -1,14 +1,11 @@
 /*
-Copyright © 2024 Rohan Date <rohan.s.date@icloud.com>
+Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+
 */
 package main
 
-import (
-	"github.com/rsdate/rpkg/cmd"
-	re "github.com/rsdate/rpkgengine"
-)
+import "github.com/rsdate/rpkg/cmd"
 
 func main() {
-	re.Hello()
 	cmd.Execute()
 }

@@ -1,6 +1,5 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -59,13 +58,13 @@ func initConfig() {
 		viper.SetConfigFile(cfgFile)
 	} else {
 		// Find home directory.
-		home, err := os.UserHomeDir()
+		curdir, err := os.Getwd()
 		cobra.CheckErr(err)
 
 		// Search config in home directory with name ".rpkg" (without extension).
-		viper.AddConfigPath(home)
+		viper.AddConfigPath(curdir)
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(".rpkg")
+		viper.SetConfigName("rpkg.build")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

@@ -10,7 +10,7 @@ import (
 )
 
 // buildCmd represents the build command
-var buildCmd = &cobra.Command{
+var BuildCmd = &cobra.Command{
 	Use:   "build",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples

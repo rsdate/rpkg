@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var buildFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -44,7 +44,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.rpkg.yaml)")
+	rootCmd.PersistentFlags().StringVar(&buildFile, "buildfile", "bf", "set the rpkg.build.yaml path (default is PROJECTDIR/rpkg.build.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -53,9 +53,9 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
+	if buildFile != "" {
 		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
+		viper.SetConfigFile(buildFile)
 	} else {
 		// Find home directory.
 		curdir, err := os.Getwd()

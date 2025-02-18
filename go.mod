@@ -28,6 +28,6 @@ require (
 
 require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/rsdate/rpkgengine v0.0.0-20250124021406-65619c9a089f
+	github.com/rsdate/rpkgengine v0.0.0-20250218004419-cbe5f2c89a5b
 	github.com/spf13/pflag v1.0.5 // indirect
 )

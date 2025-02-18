@@ -11,13 +11,33 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/rsdate/rpkgengine/rpkgengine"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
-	mirror       string = "RPKG_MIRROR"
-	conf         string
-	download_dir string = "DOWLOAD_DIR"
+	mirror        string = "RPKG_MIRROR"
+	conf          string
+	download_dir  string        = "DOWLOAD_DIR"
+	name          string        = viper.GetViper().Get("name").(string)
+	version       string        = viper.GetViper().Get("version").(string)
+	revision      int           = viper.GetViper().Get("revision").(int)
+	authors       []interface{} = viper.GetViper().Get("authors").([]interface{})
+	deps          []interface{} = viper.GetViper().Get("deps").([]interface{})
+	buildDeps     []interface{} = viper.GetViper().Get("build_deps").([]interface{})
+	buildWith     string        = viper.GetViper().Get("build_with").(string)
+	buildCommands []interface{} = viper.GetViper().Get("build_commands").([]interface{})
+	f                           = rpkgengine.RpkgBuildFile{
+		Name:          name,
+		Version:       version,
+		Revision:      revision,
+		Authors:       authors,
+		Deps:          deps,
+		BuildDeps:     buildDeps,
+		BuildWith:     buildWith,
+		BuildCommands: buildCommands,
+	}
 )
 
 func DownloadPackage(filepath string, url string) (int, error) {

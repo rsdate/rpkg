@@ -33,32 +33,24 @@ func buildPackage(projectPath string) (int, error) {
 // buildCmd represents the build command
 var BuildCmd = &cobra.Command{
 	Use:   "build",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Builds the package in the project path specified",
+	Long: `Builds the package in the project path specified.
+For example: if you have a project in /home/user/MyProject, you can build it by running rpkg build /home/user/MyProject`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if dir, err := os.Getwd(); err != nil {
-			fmt.Println("Could not get current directory")
-			os.Exit(1)
-		} else {
-			fmt.Println("Your package is being built at " + dir + ". Would you like to continue? [Y/n]")
-			fmt.Scan(&input)
-			if input == "Y" {
-				if _, err := buildPackage(dir); err != nil {
-					fmt.Println("Build failed.")
-					os.Exit(1)
-				} else {
-					fmt.Println("Build successful.")
-					os.Exit(0)
-				}
+		fmt.Println("Your package is being built at " + args[0] + ". Would you like to continue? [Y/n]")
+		fmt.Scan(&input)
+		if input == "Y" {
+			if _, err := buildPackage(args[0]); err != nil {
+				fmt.Println("Build failed.")
+				os.Exit(1)
 			} else {
-				fmt.Println("Build aborted.")
+				fmt.Println("Build successful.")
 				os.Exit(0)
 			}
+		} else {
+			fmt.Println("Build aborted.")
+			os.Exit(0)
 		}
 	},
 }

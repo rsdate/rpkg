@@ -90,8 +90,8 @@ var InstallCmd = &cobra.Command{
 	Use:   "install",
 	Short: "Installs a package from the environment variable RPKG_MIRROR",
 	Long: `Install installs a package from the environment variable RPKG_MIRROR.
-	For example: rpkg install mypackage 1.0.0 will install mypackage version 1.0.0 from
-	https://RPKG_MIRROR/projects/mypackage-1.0.0.tar.gz`,
+For example: rpkg install mypackage 1.0.0 will install mypackage version 1.0.0 from
+https://RPKG_MIRROR/projects/mypackage-1.0.0.tar.gz`,
 	Args: cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		downloadPath := os.Getenv(download_dir) + "/" + args[0] + "-" + args[1] + ".tar.gz"

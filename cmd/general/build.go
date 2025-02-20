@@ -35,7 +35,8 @@ var BuildCmd = &cobra.Command{
 	Use:   "build",
 	Short: "Builds the package in the project path specified",
 	Long: `Builds the package in the project path specified.
-For example: if you have a project in /home/user/MyProject, you can build it by running rpkg build /home/user/MyProject`,
+	For example: if you have a project in /home/user/MyProject, you can build it 
+	by running rpkg build /home/user/MyProject`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Your package is being built at " + args[0] + ". Would you like to continue? [Y/n]")

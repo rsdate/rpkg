@@ -4,10 +4,31 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package general
 
 import (
+	"errors"
 	"fmt"
+	"os"
 
+	re "github.com/rsdate/rpkgengine/rpkgengine"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
+
+var (
+	viper_instance = viper.GetViper()
+	input          string
+)
+
+func buildPackage(projectPath string) (int, error) {
+	os.Chdir(projectPath + "/Package")
+	fmt.Print("Building package... ")
+	if code, err := re.Build(projectPath, f); err != nil {
+		fmt.Println("Build failed.")
+		return code, errors.New("build failed")
+	} else {
+		fmt.Println("Build successful.")
+		return code, nil
+	}
+}
 
 // buildCmd represents the build command
 var BuildCmd = &cobra.Command{
@@ -20,7 +41,25 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("build called")
+		if dir, err := os.Getwd(); err != nil {
+			fmt.Println("Could not get current directory")
+			os.Exit(1)
+		} else {
+			fmt.Println("Your package is being built at " + dir + ". Would you like to continue? [Y/n]")
+			fmt.Scan(&input)
+			if input == "Y" {
+				if _, err := buildPackage(dir); err != nil {
+					fmt.Println("Build failed.")
+					os.Exit(1)
+				} else {
+					fmt.Println("Build successful.")
+					os.Exit(0)
+				}
+			} else {
+				fmt.Println("Build aborted.")
+				os.Exit(0)
+			}
+		}
 	},
 }
 

@@ -21,7 +21,7 @@ var (
 func buildPackage(projectPath string) (int, error) {
 	os.Chdir(projectPath + "/Package")
 	fmt.Print("Building package... ")
-	if code, err := re.Build(projectPath, f); err != nil {
+	if code, err := re.Build(projectPath, f, false); err != nil {
 		fmt.Println("Build failed.")
 		return code, errors.New("build failed")
 	} else {

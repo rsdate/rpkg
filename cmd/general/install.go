@@ -4,7 +4,6 @@ Copyright © 2024 Rohan Date <rohan.s.date@icloud.com>
 package general
 
 import (
-	//	"fmt"
 	// "errors"
 	"fmt"
 	"io"
@@ -19,16 +18,16 @@ import (
 var (
 	mirror        string = "RPKG_MIRROR"
 	conf          string
-	download_dir  string        = "DOWLOAD_DIR"
-	name          string        = viper.GetViper().Get("name").(string)
-	version       string        = viper.GetViper().Get("version").(string)
-	revision      int           = viper.GetViper().Get("revision").(int)
-	authors       []interface{} = viper.GetViper().Get("authors").([]interface{})
-	deps          []interface{} = viper.GetViper().Get("deps").([]interface{})
-	buildDeps     []interface{} = viper.GetViper().Get("build_deps").([]interface{})
-	buildWith     string        = viper.GetViper().Get("build_with").(string)
-	buildCommands []interface{} = viper.GetViper().Get("build_commands").([]interface{})
-	f                           = rpkgengine.RpkgBuildFile{
+	download_dir  string                   = "DOWLOAD_DIR"
+	name          string                   = viper.GetViper().Get("name").(string)
+	version       string                   = viper.GetViper().Get("version").(string)
+	revision      int                      = viper.GetViper().Get("revision").(int)
+	authors       []interface{}            = viper.GetViper().Get("authors").([]interface{})
+	deps          []interface{}            = viper.GetViper().Get("deps").([]interface{})
+	buildDeps     []interface{}            = viper.GetViper().Get("build_deps").([]interface{})
+	buildWith     string                   = viper.GetViper().Get("build_with").(string)
+	buildCommands []interface{}            = viper.GetViper().Get("build_commands").([]interface{})
+	f             rpkgengine.RpkgBuildFile = rpkgengine.RpkgBuildFile{
 		Name:          name,
 		Version:       version,
 		Revision:      revision,
@@ -41,7 +40,6 @@ var (
 )
 
 func DownloadPackage(filepath string, url string) (int, error) {
-	// Will replace with wget command, right now is too late at night to do so
 	// Create the file
 	out, err := os.Create(filepath)
 	if err != nil {
@@ -63,6 +61,19 @@ func DownloadPackage(filepath string, url string) (int, error) {
 		return 1, err
 	case http.StatusForbidden:
 		fmt.Fprintln(os.Stdout, []any{"error: server did not allow permission to access the resource"}...)
+		return 1, err
+	case http.StatusUnauthorized:
+		fmt.Fprintln(os.Stdout, []any{"error: server did not allow permission to access the resource"}...)
+		return 1, err
+	case http.StatusInternalServerError:
+		fmt.Fprintln(os.Stdout, []any{"error: server encountered an internal error"}...)
+		return 1, err
+	case http.StatusServiceUnavailable:
+		fmt.Fprintln(os.Stdout, []any{"error: server is currently unavailable"}...)
+		return 1, err
+	default:
+		fmt.Fprintln(os.Stdout, []any{"error: server did not respond with a valid status code"}...)
+
 	}
 
 	// Write the body to file

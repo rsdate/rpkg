@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	g "github.com/rsdate/rpkg/cmd/general"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -48,6 +49,11 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
+func addSubCommands() {
+	rootCmd.AddCommand(g.InstallCmd)
+	rootCmd.AddCommand(g.BuildCmd)
+}
+
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if buildFile != "" {
@@ -70,4 +76,5 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
+	addSubCommands()
 }

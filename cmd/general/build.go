@@ -19,6 +19,11 @@ var (
 )
 
 func buildPackage(projectPath string) (int, error) {
+	if viper_instance == nil {
+		fmt.Println("No configuration file found. If your build file is located in a different directory, please specify the path using the --buildfile flag.")
+		return 1, errors.New("no configuration file found")
+	}
+	f := initVars(viper_instance)
 	os.Chdir(projectPath + "/Package")
 	fmt.Print("Building package... ")
 	if code, err := re.Build(projectPath, f, false); err != nil {

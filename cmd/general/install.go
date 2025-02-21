@@ -16,18 +16,21 @@ import (
 )
 
 var (
-	mirror        string = "RPKG_MIRROR"
-	conf          string
-	download_dir  string                   = "DOWLOAD_DIR"
-	name          string                   = viper.GetViper().Get("name").(string)
-	version       string                   = viper.GetViper().Get("version").(string)
-	revision      int                      = viper.GetViper().Get("revision").(int)
-	authors       []interface{}            = viper.GetViper().Get("authors").([]interface{})
-	deps          []interface{}            = viper.GetViper().Get("deps").([]interface{})
-	buildDeps     []interface{}            = viper.GetViper().Get("build_deps").([]interface{})
-	buildWith     string                   = viper.GetViper().Get("build_with").(string)
-	buildCommands []interface{}            = viper.GetViper().Get("build_commands").([]interface{})
-	f             rpkgengine.RpkgBuildFile = rpkgengine.RpkgBuildFile{
+	mirror       string = "RPKG_MIRROR"
+	conf         string
+	download_dir string = "DOWLOAD_DIR"
+)
+
+func initVars(viper_instance *viper.Viper) rpkgengine.RpkgBuildFile {
+	name := viper_instance.Get("name").(string)
+	version := viper_instance.Get("version").(string)
+	revision := viper_instance.Get("revision").(int)
+	authors := viper_instance.Get("authors").([]interface{})
+	deps := viper_instance.Get("deps").([]interface{})
+	buildDeps := viper_instance.Get("build_deps").([]interface{})
+	buildWith := viper_instance.Get("build_with").(string)
+	buildCommands := viper_instance.Get("build_commands").([]interface{})
+	f := rpkgengine.RpkgBuildFile{
 		Name:          name,
 		Version:       version,
 		Revision:      revision,
@@ -37,7 +40,8 @@ var (
 		BuildWith:     buildWith,
 		BuildCommands: buildCommands,
 	}
-)
+	return f
+}
 
 func DownloadPackage(filepath string, url string) (int, error) {
 	// Create the file

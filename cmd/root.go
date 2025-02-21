@@ -44,7 +44,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVarP(&buildFile, "buildfile", "bf", "", "set the rpkg.build.yaml path (default is PROJECTDIR/rpkg.build.yaml)")
+	rootCmd.PersistentFlags().StringVarP(&buildFile, "buildfile", "b", "", "set the rpkg.build.yaml path (default is PROJECTDIR/rpkg.build.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

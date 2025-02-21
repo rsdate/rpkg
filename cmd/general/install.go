@@ -18,7 +18,7 @@ import (
 var (
 	mirror       string = "RPKG_MIRROR"
 	conf         string
-	download_dir string = "DOWLOAD_DIR"
+	download_dir string = "DOWNLOAD_DIR"
 )
 
 func initVars(viper_instance *viper.Viper) rpkgengine.RpkgBuildFile {

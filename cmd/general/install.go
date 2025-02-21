@@ -77,7 +77,7 @@ func DownloadPackage(filepath string, url string) (int, error) {
 	case http.StatusServiceUnavailable:
 		fmt.Fprintln(os.Stderr, []any{"error: server is currently unavailable"}...)
 		return 1, err
-	case http.StatusFound:
+	case http.StatusOK:
 		return 0, nil
 	default:
 		fmt.Fprintln(os.Stderr, []any{"error: server returned an unexpected status code"}...)

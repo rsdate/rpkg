@@ -47,6 +47,7 @@ func DownloadPackage(filepath string, url string) (int, error) {
 	// Create the file
 	out, err := os.Create(filepath)
 	if err != nil {
+		fmt.Fprintln(os.Stderr, []any{"error: could not create file"}...)
 		return 1, err
 	}
 	defer out.Close()
@@ -54,6 +55,7 @@ func DownloadPackage(filepath string, url string) (int, error) {
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
+		fmt.Fprintln(os.Stderr, []any{"error: could not get data from server"}...)
 		return 1, err
 	}
 	defer resp.Body.Close()
@@ -61,28 +63,31 @@ func DownloadPackage(filepath string, url string) (int, error) {
 	// Check server response
 	switch code := resp.StatusCode; code {
 	case http.StatusNotFound:
-		fmt.Fprintln(os.Stdout, []any{"error: server did not find file"}...)
+		fmt.Fprintln(os.Stderr, []any{"error: server did not find file"}...)
 		return 1, err
 	case http.StatusForbidden:
-		fmt.Fprintln(os.Stdout, []any{"error: server did not allow permission to access the resource"}...)
+		fmt.Fprintln(os.Stderr, []any{"error: server did not allow permission to access the resource"}...)
 		return 1, err
 	case http.StatusUnauthorized:
-		fmt.Fprintln(os.Stdout, []any{"error: server did not allow permission to access the resource"}...)
+		fmt.Fprintln(os.Stderr, []any{"error: server did not allow permission to access the resource"}...)
 		return 1, err
 	case http.StatusInternalServerError:
-		fmt.Fprintln(os.Stdout, []any{"error: server encountered an internal error"}...)
+		fmt.Fprintln(os.Stderr, []any{"error: server encountered an internal error"}...)
 		return 1, err
 	case http.StatusServiceUnavailable:
-		fmt.Fprintln(os.Stdout, []any{"error: server is currently unavailable"}...)
+		fmt.Fprintln(os.Stderr, []any{"error: server is currently unavailable"}...)
 		return 1, err
+	case http.StatusFound:
+		return 0, nil
 	default:
-		fmt.Fprintln(os.Stdout, []any{"error: server did not respond with a valid status code"}...)
+		fmt.Fprintln(os.Stderr, []any{"error: server returned an unexpected status code"}...)
 
 	}
 
 	// Write the body to file
 	_, err = io.Copy(out, resp.Body)
 	if err != nil {
+		fmt.Fprintln(os.Stderr, []any{"error: could not write to file"}...)
 		return 1, err
 	}
 

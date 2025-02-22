@@ -1,9 +1,11 @@
 FROM golang:1.24.0 as builder
 WORKDIR /app
+RUN --mount=type=bind,src=./,dst=/app/ go get -u ./... && go mod download
 COPY . .
-RUN go mod download
-RUN GOARCH=arm64 GOOS=darwin go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o /app/rpkg
+RUN chmod +x ./build.sh
+RUN ./build.sh
+RUN tar -czvf rpkg.tar.gz ./out/
 
 FROM scratch as export
-COPY --from=builder /app/rpkg /app/rpkg
-ENTRYPOINT ["/app/rpkg"]
+COPY --from=builder /app/rpkg.tar.gz /app/rpkg.tar.gz
+ENTRYPOINT ["/app/rpkg.tar.gz"]

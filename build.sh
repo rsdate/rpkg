@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Linux
+echo Linux
 archs1=(amd64 arm arm64 ppc64le ppc64 s390x)
 
 for arch in ${archs1[@]}
@@ -9,6 +10,7 @@ do
 done
 
 # MacOS
+echo MacOS
 archs2=(amd64 arm64)
 
 for arch in ${archs2[@]}
@@ -17,6 +19,7 @@ do
 done
 
 # Windows
+echo Windows
 archs3=(amd64 arm64 386)
 
 for arch in ${archs3[@]}
@@ -25,6 +28,7 @@ do
 done
 
 # FreeBSD
+echo FreeBSD
 archs4=(amd64 arm64 386 arm riscv64)
 
 for arch in ${archs4[@]}
@@ -33,6 +37,7 @@ do
 done
 
 # NetBSD
+echo NetBSD
 archs5=(amd64 arm64 386 arm)
 
 for arch in ${archs5[@]}
@@ -41,6 +46,7 @@ do
 done
 
 # OpenBSD
+echo OpenBSD
 archs6=(amd64 arm64 386 arm ppc64 riscv64)
 
 for arch in ${archs6[@]}

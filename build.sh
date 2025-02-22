@@ -1,49 +1,49 @@
 #!/bin/bash
 
 # Linux
-archs=(amd64 arm arm64 ppc64le ppc64 s390x)
+archs1=(amd64 arm arm64 ppc64le ppc64 s390x)
 
-for arch in ${archs[@]}
+for arch in ${archs1[@]}
 do
-	env GOOS=linux GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o out/linux/rpkg_linux_${arch}
+	env GOOS=linux GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o ./out/linux/rpkg_linux_${arch} .
 done
 
 # MacOS
-archs=(amd64 arm64)
+archs2=(amd64 arm64)
 
-for arch in ${archs[@]}
+for arch in ${archs2[@]}
 do
-	env GOOS=darwin GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o out/darwin/rpkg_darwin_${arch}
+	env GOOS=darwin GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o ./out/darwin/rpkg_darwin_${arch} .
 done
 
 # Windows
-archs=(amd64 arm64 386)
+archs3=(amd64 arm64 386)
 
-for arch in ${archs[@]}
+for arch in ${archs3[@]}
 do
-	env GOOS=windows GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o out/windows/rpkg_windows_${arch}
+	env GOOS=windows GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o ./out/windows/rpkg_windows_${arch} .
 done
 
 # FreeBSD
-archs=(amd64 arm64 386 arm riscv64)
+archs4=(amd64 arm64 386 arm riscv64)
 
-for arch in ${archs[@]}
+for arch in ${archs4[@]}
 do
-	env GOOS=windows GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o out/freebsd/rpkg_freebsd_${arch}
+	env GOOS=freebsd GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o ./out/freebsd/rpkg_freebsd_${arch} .
 done
 
 # NetBSD
-archs=(amd64 arm64 386 arm)
+archs5=(amd64 arm64 386 arm)
 
-for arch in ${archs[@]}
+for arch in ${archs5[@]}
 do
-	env GOOS=windows GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o out/netbsd/rpkg_netbsd_${arch}
+	env GOOS=netbsd GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o ./out/netbsd/rpkg_netbsd_${arch} .
 done
 
 # OpenBSD
-archs=(amd64 arm64 386 arm ppc64 riscv64)
+archs6=(amd64 arm64 386 arm ppc64 riscv64)
 
-for arch in ${archs[@]}
+for arch in ${archs6[@]}
 do
-	env GOOS=windows GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o out/openbsd/rpkg_openbsd_${arch}
+	env GOOS=openbsd GOARCH=${arch} go build -ldflags="-X main.version=$(git describe --always --long --dirty)" -o ./out/openbsd/rpkg_openbsd_${arch} .
 done

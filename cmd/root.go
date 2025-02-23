@@ -1,5 +1,5 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 Rohan Date rohan.s.date@icloud.com
 */
 package cmd
 
@@ -12,7 +12,9 @@ import (
 	"github.com/spf13/viper"
 )
 
-var buildFile string
+var (
+	buildFile string
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -55,6 +57,7 @@ func init() {
 func addSubCommands() {
 	rootCmd.AddCommand(g.InstallCmd)
 	rootCmd.AddCommand(g.BuildCmd)
+	rootCmd.AddCommand(g.RemoveCmd)
 }
 
 // initConfig reads in config file and ENV variables if set.

@@ -6,93 +6,11 @@ package general
 import (
 	// "errors"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
+	"os/exec"
 
-	"github.com/rsdate/rpkgengine/rpkgengine"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
-
-var (
-	mirror       string = "RPKG_MIRROR"
-	conf         string
-	download_dir string = "DOWNLOAD_DIR"
-)
-
-func initVars(viper_instance *viper.Viper) rpkgengine.RpkgBuildFile {
-	name := viper_instance.Get("name").(string)
-	version := viper_instance.Get("version").(string)
-	revision := viper_instance.Get("revision").(int)
-	authors := viper_instance.Get("authors").([]interface{})
-	deps := viper_instance.Get("deps").([]interface{})
-	buildDeps := viper_instance.Get("build_deps").([]interface{})
-	buildWith := viper_instance.Get("build_with").(string)
-	buildCommands := viper_instance.Get("build_commands").([]interface{})
-	f := rpkgengine.RpkgBuildFile{
-		Name:          name,
-		Version:       version,
-		Revision:      revision,
-		Authors:       authors,
-		Deps:          deps,
-		BuildDeps:     buildDeps,
-		BuildWith:     buildWith,
-		BuildCommands: buildCommands,
-	}
-	return f
-}
-
-func DownloadPackage(filepath string, url string) (int, error) {
-	// Create the file
-	out, err := os.Create(filepath)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, []any{"error: could not create file"}...)
-		return 1, err
-	}
-	defer out.Close()
-
-	// Get the data
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, []any{"error: could not get data from server"}...)
-		return 1, err
-	}
-	defer resp.Body.Close()
-
-	// Check server response
-	switch code := resp.StatusCode; code {
-	case http.StatusNotFound:
-		fmt.Fprintln(os.Stderr, []any{"error: server did not find file"}...)
-		return 1, err
-	case http.StatusForbidden:
-		fmt.Fprintln(os.Stderr, []any{"error: server did not allow permission to access the resource"}...)
-		return 1, err
-	case http.StatusUnauthorized:
-		fmt.Fprintln(os.Stderr, []any{"error: server did not allow permission to access the resource"}...)
-		return 1, err
-	case http.StatusInternalServerError:
-		fmt.Fprintln(os.Stderr, []any{"error: server encountered an internal error"}...)
-		return 1, err
-	case http.StatusServiceUnavailable:
-		fmt.Fprintln(os.Stderr, []any{"error: server is currently unavailable"}...)
-		return 1, err
-	case http.StatusOK:
-		return 0, nil
-	default:
-		fmt.Fprintln(os.Stderr, []any{"error: server returned an unexpected status code"}...)
-
-	}
-
-	// Write the body to file
-	_, err = io.Copy(out, resp.Body)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, []any{"error: could not write to file"}...)
-		return 1, err
-	}
-
-	return 0, nil
-}
 
 // InstallCmd represents the install command
 var InstallCmd = &cobra.Command{
@@ -117,9 +35,25 @@ https://RPKG_MIRROR/projects/mypackage-1.0.0.tar.gz`,
 			fmt.Fprintf(os.Stdout, "The package path on the mirror is %s and it will download to %s.\nWould you like to proceed with the installation? [Y or n]", []any{projectPath, downloadPath}...)
 			fmt.Scan(&conf)
 			if conf == "Y" {
+				fmt.Print("Downloading package... ")
 				code, err := DownloadPackage(downloadPath, fullName)
 				if code != 0 && err != nil {
 					panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
+				}
+				fmt.Println("Package downloaded successfully.")
+				fmt.Print("Unziping package... ")
+				cmd := exec.Command("tar", "-xzf", projectPath)
+				cmd.Stdout = nil
+				err = cmd.Run()
+				if err != nil {
+					fmt.Fprint(os.Stderr, []any{"error: could not unzip package"}...)
+					os.Exit(1)
+				}
+				fmt.Println("Package unziped successfully.")
+				fmt.Print("Building package... ")
+				os.Chdir(args[0] + "-" + args[1])
+				if _, err := BuildPackage("."); err != nil {
+
 				}
 				fmt.Println("Installation completed! 🎉")
 			} else if conf == "n" {

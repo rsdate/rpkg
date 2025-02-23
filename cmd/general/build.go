@@ -1,39 +1,14 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 Rohan Date rohan.s.date@icloud.com
 */
 package general
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
-	re "github.com/rsdate/rpkgengine/rpkgengine"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
-
-var (
-	viper_instance = viper.GetViper()
-	input          string
-)
-
-func buildPackage(projectPath string) (int, error) {
-	if viper_instance == nil {
-		fmt.Println("No configuration file found. If your build file is located in a different directory, please specify the path using the --buildfile flag.")
-		return 1, errors.New("no configuration file found")
-	}
-	f := initVars(viper_instance)
-	os.Chdir(projectPath + "/Package")
-	fmt.Print("Building package... ")
-	if code, err := re.Build(projectPath, f, false); err != nil {
-		fmt.Println("Build failed.")
-		return code, errors.New("build failed")
-	} else {
-		fmt.Println("Build successful.")
-		return code, nil
-	}
-}
 
 // buildCmd represents the build command
 var BuildCmd = &cobra.Command{
@@ -47,7 +22,7 @@ by running rpkg build /home/user/MyProject`,
 		fmt.Println("Your package is being built at " + args[0] + ". Would you like to continue? [Y/n]")
 		fmt.Scan(&input)
 		if input == "Y" {
-			if _, err := buildPackage(args[0]); err != nil {
+			if _, err := BuildPackage(args[0]); err != nil {
 				fmt.Println("Build failed.")
 				os.Exit(1)
 			} else {

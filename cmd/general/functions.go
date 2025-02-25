@@ -14,10 +14,10 @@ import (
 )
 
 var (
-	mirror         string = "RPKG_MIRROR"
+	mirror         string       = "RPKG_MIRROR"
+	download_dir   string       = "DOWNLOAD_DIR"
+	viper_instance *viper.Viper = viper.GetViper()
 	conf           string
-	download_dir   string = "DOWNLOAD_DIR"
-	viper_instance        = viper.GetViper()
 	input          string
 )
 

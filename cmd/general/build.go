@@ -22,7 +22,7 @@ by running rpkg build /home/user/MyProject`,
 		fmt.Println("Your package is being built at " + args[0] + ". Would you like to continue? [Y/n]")
 		fmt.Scan(&input)
 		if input == "Y" {
-			if _, err := BuildPackage(args[0]); err != nil {
+			if _, err := BuildPackage(args[0], os.Getenv(panic_mode)); err != nil {
 				fmt.Println("Build failed.")
 				os.Exit(1)
 			} else {

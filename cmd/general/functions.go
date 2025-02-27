@@ -41,7 +41,7 @@ var (
 )
 
 func createErr(message string) error {
-	return fmt.Errorf(message)
+	return fmt.Errorf("%s", []any{message}...)
 }
 
 func returnErr(err error) (int, error) {

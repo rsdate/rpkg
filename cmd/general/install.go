@@ -20,17 +20,21 @@ For example: rpkg install mypackage 1.0.0 will install mypackage version 1.0.0 f
 https://RPKG_MIRROR/projects/mypackage-1.0.0.tar.gz`,
 	Args: cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		downloadPath := os.Getenv(download_dir) + "/" + args[0] + "-" + args[1] + ".tar.gz"
-		projectPath := args[0] + "-" + args[1] + ".tar.gz"
+		dirName := args[0] + "-" + args[1]
+		projectPath := dirName + ".tar.gz"
+		downloadPath := os.Getenv(download_dir) + "/" + projectPath
 		defaultMirror := os.Getenv(mirror)
 		if defaultMirror == "" {
-			fmt.Fprintln(os.Stdout, []any{"warning: environment variable RPKG_MIRROR not set.\nReverting to default mirror..."}...)
-			code, err := DownloadPackage(downloadPath, "https://rsdate.github.io/projects/"+projectPath)
-			if code != 0 && err != nil {
-				panic(fmt.Errorf("fatal: Unable to download package. Please check to see whether your package actually exists. Error Message: %s", err))
-			}
+			fmt.Fprintln(os.Stdout, []any{"warning: environment variable RPKG_MIRROR not set.\nReverting to default mirror... "}...)
+			checkErr(os.Getenv(panic_mode), "package installation failed", func() (int, error) {
+				_, err := InstallPackage(downloadPath, projectPath, dirName, os.Getenv(panic_mode))
+				return returnErr(err)
+			})
 		} else {
-			InstallPackage(downloadPath, projectPath, args[0]+"-"+args[1])
+			checkErr(os.Getenv(panic_mode), "package installation failed", func() (int, error) {
+				_, err := InstallPackage(downloadPath, projectPath, dirName, os.Getenv(panic_mode))
+				return returnErr(err)
+			})
 		}
 
 	},

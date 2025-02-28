@@ -1,6 +1,11 @@
 package general
 
+/*
+Copyright © 2024 Rohan Date <rohan.s.date@icloud.com>
+*/
+
 // This file contains all the excess functions and variables from the general package
+// Lines in this file: 190
 
 import (
 	"fmt"

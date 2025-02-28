@@ -3,6 +3,8 @@ Copyright © 2025 Rohan Date rohan.s.date@icloud.com
 */
 package general
 
+// Lines in this file: 50
+
 import (
 	"fmt"
 	"os"

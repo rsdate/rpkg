@@ -30,4 +30,4 @@ jobs:
         --file docker/export/Dockerfile 
         --output=. .
     - name: Test out binaries
-      run: tar -xzvf ./app/rpkg.tar.gz && ./app/out/linux/rpkg_linux_amd64 --help
+      run: tar -xzvf ./app/rpkg.tar.gz && ./out/linux/rpkg_linux_amd64 --help

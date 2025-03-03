@@ -2,10 +2,16 @@
 
 FROM golang:1.24.0 AS builder
 WORKDIR /app
-RUN --mount=type=bind,src=./,dst=/app/,rw go get -u ./... && go mod download
+RUN go env -w GOMODCACHE=/root/.cache/go-build
+RUN \ 
+--mount=type=bind,src=./,dst=/app/,rw \
+--mount=type=cache,target=/root/.cache/go-build \
+go get -u ./... && go mod download
 COPY --chmod=755 ./build.sh /app/build.sh
 COPY . .
-RUN /app/build.sh && tar -czf rpkg.tar.gz ./out/
+RUN \
+--mount=type=cache,target=/root/.cache/go-build \
+/app/build.sh && tar -czf rpkg.tar.gz ./out/
 
 FROM scratch AS export
 WORKDIR /app

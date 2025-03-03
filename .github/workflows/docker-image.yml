@@ -15,8 +15,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3.10.0
     - name: Set up a gha cache-supported Docker driver
@@ -25,11 +23,12 @@ jobs:
         --driver=docker-container 
         --driver-opt=default-load=true
     - name: Build binaries
-      run: docker buildx build 
-        --builder=rpkg-builder 
-        --cache-from type=gha 
-        --cache-to type=gha,mode=max 
-        --file docker/export/Dockerfile 
-        --output=. .
+      run: #docker buildx build 
+        #--builder=rpkg-builder 
+        #--cache-from type=gha 
+        #--cache-to type=gha,mode=max 
+        #--file docker/export/Dockerfile 
+        #--output=. .
+        go build -o rpkg . && tar -czvf ./rpkg.tar.gz ./rpkg
     - name: Test out binaries
-      run: tar -xzf ./rpkg.tar.gz && ./out/linux/rpkg_linux_amd64 --help
+      run: tar -xzvf ./rpkg.tar.gz && ./rpkg --help

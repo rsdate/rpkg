@@ -1,9 +1,0 @@
-# This file is for testing a workflow when nothing has been changed
-
-Commiting: Trying to fix the workflow 
-    Message: "Trying to fix the workflow" -> release, origin/release
-    HEAD: On release
-
-Commiting: Testing a workflow on the release branch 
-    Message: "Testing" -> release, origin/release
-    HEAD: On release

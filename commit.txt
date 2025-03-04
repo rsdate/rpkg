@@ -1,0 +1,5 @@
+# This file is for testing a workflow when nothing has been changed
+
+Commiting: Testing a workflow on the release branch 
+    Message: "Testing" -> release, origin/release
+    HEAD: On release

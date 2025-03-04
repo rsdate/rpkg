@@ -13,9 +13,8 @@ RUN \
 --mount=type=cache,target=/root/.cache/go-build \
 /app/build.sh && tar -czf rpkg.tar.gz ./out/
 
-FROM scratch AS run
+FROM ubuntu:24.04 AS run
 WORKDIR /app
 COPY --from=builder /app/rpkg.tar.gz ./rpkg.tar.gz
-COPY --from=builder /bin/bash ./bash
-RUN tar -xzf rpkg.tar.gz
-ENTRYPOINT [ "./bash" ]
+RUN tar -xzf ./rpkg.tar.gz && rm ./rpkg.tar.gz
+ENTRYPOINT [ "/bin/bash" ]

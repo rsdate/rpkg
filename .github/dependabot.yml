@@ -13,9 +13,17 @@ updates:
       prefix: "[go] "
       include: "scope"
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/docker/build/"
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "[docker] "
+      prefix: "[docker-build] "
       include: "scope"
+  - package-ecosystem: "docker"
+    directory: "/docker/export/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "[docker-export] "
+      include: "scope"
+  

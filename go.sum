@@ -23,6 +23,10 @@ github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZV
 github.com/rogpeppe/go-internal v1.9.0/go.mod h1:WtVeX8xhTBvf0smdhujwtBcq4Qrzq/fJaraNFVN+nFs=
 github.com/rsdate/rpkgengine v0.0.1 h1:+iR6tY2wS6qjSD4P6R/1byzl42iIPhcQHAeKc5npIEA=
 github.com/rsdate/rpkgengine v0.0.1/go.mod h1:ETzHqF0zybwz6rI/awiel1LZcJPoWw+1QTxuouddx/k=
+github.com/rsdate/rpkgengine v0.0.2 h1:NPdzyXIUJp1xPhzbConaxdJ7vJEFKZi12lW8ZuiP8rA=
+github.com/rsdate/rpkgengine v0.0.2/go.mod h1:LcGj5RGUb2P8MVsV6jfdRPAGqJe29hn/gapda/PV3ig=
+github.com/rsdate/utils v0.0.1 h1:rVd6yIr6hCkjagCy3a7B2Mr8BR72sJVZkFGZWNOABDY=
+github.com/rsdate/utils v0.0.1/go.mod h1:yR45f+ih4XMF/NAQ+6Bo8rm7s/eYuKwFzk/m/I7oSdI=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sagikazarmark/locafero v0.8.0 h1:mXaMVw7IqxNBxfv3LdWt9MDmcWDQ1fagDH918lOdVaQ=
 github.com/sagikazarmark/locafero v0.8.0/go.mod h1:UBUyz37V+EdMS3hDF3QWIiVr/2dPrx49OMO0Bn0hJqk=

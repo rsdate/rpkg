@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.24.1 AS builder
+FROM golang:1.24.3 AS builder
 WORKDIR /app
 RUN go env -w GOMODCACHE=/root/.cache/go-build
 RUN \ 
